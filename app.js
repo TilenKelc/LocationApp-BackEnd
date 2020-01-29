@@ -7,6 +7,10 @@ app.set('view engine', 'html');
 app.use(cors());
 
 app.post('/', function(req, res){
+
+  var hereApi = '';
+  var weatherApi = '';
+
   var lat = [];
   var lon = [];
   var object = [];
@@ -14,22 +18,21 @@ app.post('/', function(req, res){
 
   lat.push(req.query.coordinates1[0]);
   lat.push(req.query.coordinates2[0]);
-
   lon.push(req.query.coordinates1[1]);
   lon.push(req.query.coordinates2[1]);
-  
+
   axios('https://route.ls.hereapi.com/routing/7.2/calculateroute.json?' + 
-    'apiKey=ZxwsS89OjHMbyXLctmXRgOnugOgz1xgb9hGiwXdqTHg&' + 
+    'apiKey=' + hereApi + '&' + 
     'waypoint0=geo!' + lat[0] + ',' + lon[0] + '&' + 
     'waypoint1=geo!' + lat[1] + ',' + lon[1] + '&mode=fastest;pedestrian;traffic:disabled')
   .then((response)=>{
     var coordinates = response.data.response.route[0].leg[0].maneuver;
 
-    axios('https://api.openweathermap.org/data/2.5/weather?lat=' + lat[0] + '&lon=' + lon[0] + '&units=metric&appid=39f1004c7ecc22d6f734974c44428625')
+    axios('https://api.openweathermap.org/data/2.5/weather?lat=' + lat[0] + '&lon=' + lon[0] + '&units=metric&appid=' + weatherApi)
     .then((response)=>{
       object.push({lat: lat[0], lon: lon[0], temp: Math.round(response.data.main.temp), weather: response.data.weather[0].description});
-
-      axios('https://api.openweathermap.org/data/2.5/weather?lat=' + lat[1] + '&lon=' + lon[1] + '&units=metric&appid=39f1004c7ecc22d6f734974c44428625')
+      console.log("asdasd");
+      axios('https://api.openweathermap.org/data/2.5/weather?lat=' + lat[1] + '&lon=' + lon[1] + '&units=metric&appid=' + weatherApi)
       .then((response)=>{
         object.push({lat: lat[1], lon: lon[1], temp: Math.round(response.data.main.temp), weather: response.data.weather[0].description});
         
@@ -37,7 +40,7 @@ app.post('/', function(req, res){
         var idx = coordinates.length;
 
         coordinates.forEach(element => {
-          axios('https://api.openweathermap.org/data/2.5/weather?lat=' + element.position.latitude + '&lon=' + element.position.longitude + '&units=metric&appid=39f1004c7ecc22d6f734974c44428625')
+          axios('https://api.openweathermap.org/data/2.5/weather?lat=' + element.position.latitude + '&lon=' + element.position.longitude + '&units=metric&appid=' + weatherApi)
           .then((response)=>{
 
             locations.push({lat: element.position.latitude, lon: element.position.longitude, temp: response.data.main.temp, weather: response.data.weather[0].description});
@@ -73,6 +76,7 @@ app.post('/', function(req, res){
               }
 
               //console.log(object);
+              console.log(object);
               res.send({data: object});
 
 
@@ -80,8 +84,8 @@ app.post('/', function(req, res){
               /*
               locations.forEach(element => {
                 object.push(element);
-              });
-              res.send({data: object});*/
+              });*/
+              res.send({data: object});
             }
           })
           .catch((error)=>{
