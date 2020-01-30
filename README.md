@@ -12,3 +12,6 @@ It uses:
 - cors
 
 Inside the app, it uses arrays to temporary store the data, and an array called Objects, to store it finaly, before sending it.
+
+The Api response looks like this: 
+![alt text](https://github.com/fpv-life/LocationApp-BackEnd/blob/master/Pictures/slika%20api%20requesta.PNG)
