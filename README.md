@@ -11,8 +11,8 @@ It uses:
 - axios
 - cors
 
-Inside the app, it uses arrays to temporary store the data, and an array called Objects, to store it finaly, before sending it.
+Inside the app, it uses arrays to temporary store the data, and an array called Objects, to store it finaly, before sending it. It firstly gets the route from one to another location, then it checks the weather of the 2 sent locations, and then loops over all other locations. 
 
-The Api response looks like this:
+The Api final object response looks like this:
 
 ![alt text](https://github.com/fpv-life/LocationApp-BackEnd/blob/master/Pictures/slika%20api%20requesta.PNG)
